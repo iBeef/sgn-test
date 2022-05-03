@@ -34,9 +34,9 @@ class ApiController extends Controller {
             ->value('cn')
             ->pattern('alphaNumeric')
             ->isRequired();
-            
+
         if(!$validator->isValid()) {
-            sendJson($invalidResponse, 404);
+            sendJson($invalidResponse, 400);
         } else {
             $input = $validator->getValidInputs();
             $employee = $this->employeeModel
