@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  web-server:
+    build:
+      dockerfile: Dockerfile
+      context: ./docker
+    restart: always
+    volumes:
+      - "./:/var/www/html/"
+      - ./docker/vhost.conf:/etc/apache2/sites-enabled/000-default.conf
+    ports:
+      - "8080:80"
+  mysql-server:
+    image: mysql:8.0.19
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: 'stop_go_test'
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.0.1
+    restart: always
+    environment:
+      PMA_HOST: mysql-server
+      PMA_USER: root
+      PMA_PASSWORD: secret
+    ports:
+      - "5001:80"
+volumes:
+  mysql-data:
